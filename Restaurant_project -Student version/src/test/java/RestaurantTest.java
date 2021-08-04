@@ -70,4 +70,32 @@ class RestaurantTest {
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+
+    @Test
+    public void get_expected_price_of_the_complete_order() throws itemNotFoundException {
+        restaurant.addToMenu("item1",100);
+        restaurant.addToMenu("item2",300);
+        restaurant.addToMenu("item3",200);
+
+        List<String> order = new ArrayList ();
+        order.add("item1");
+        order.add("item2");
+
+        assertEquals(400,restaurant.getTotalOrderValue(order));
+
+    }
+
+    @Test
+    public void throw_exception_in_case_item_not_available_on_menu(){
+        restaurant = new Restaurant("test","test",LocalTime.now().minusMinutes(60),LocalTime.now().plusMinutes(60));
+        restaurant.addToMenu("item1",100);
+        restaurant.addToMenu("item2",300);
+        restaurant.addToMenu("item3",200);
+
+        List<String> order = new ArrayList ();
+        order.add("item1");
+        order.add("item6");
+
+        assertThrows(itemNotFoundException.class,()->restaurant.getTotalOrderValue(order));
+    }
 }
